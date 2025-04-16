@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>時間割</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <script src="auth.js" defer></script>
+  <script src="timetable.js" defer></script>
 </head>
 <body>
   <div class="sidebar">
     <div class="menu">
-      <div class="menu-item" data-page="home">ホーム</div>
-      <div class="menu-item active" data-page="timetable">時間割</div>
+      <div class="menu-item" onclick="location.href='home.html'">ホーム</div>
+      <div class="menu-item active" onclick="location.href='timetable.html'">時間割</div>
     </div>
     <div class="logout-wrapper">
       <button id="logout">ログアウト</button>
     </div>
   </div>
-  <div class="content">
-    <h2>時間割</h2>
-    <table id="timetable"></table>
-  </div>
 
-  <script src="auth.js"></script>
-  <script src="navigation.js"></script>
-  <script src="timetable.js"></script>
+  <div class="content">
+    <h2 id="user-info">ユーザー情報を読み込み中...</h2>
+    <div id="timetable-area"></div>
+  </div>
 </body>
 </html>
