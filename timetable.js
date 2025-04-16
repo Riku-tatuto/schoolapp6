@@ -1,40 +1,61 @@
-// ユーザー情報CSVを読み込んで、自分のコースを取得
-fetch('user_data.csv')
-  .then(res => res.text())
-  .then(text => {
-    const lines = text.trim().split('\n');
-    const users = lines.slice(1).map(line => {
-      const [username, password, course, grade, classNo, number, name] = line.split(',');
-      return { username, course };
+window.addEventListener("DOMContentLoaded", () => {
+  const username = sessionStorage.getItem("username");
+  if (!username) {
+    alert("ログインしてください。");
+    location.href = "index.html";
+    return;
+  }
+
+  fetch("user_data.csv")
+    .then(res => res.text())
+    .then(data => {
+      const lines = data.trim().split("\n").map(line => line.split(","));
+      const user = lines.find(line => line[0] === username);
+      if (!user) {
+        document.getElementById("user-info").textContent = "ユーザー情報が見つかりません";
+        return;
+      }
+
+      const [id, pass, name, year, classNum, number, course] = user;
+      document.getElementById("user-info").textContent =
+        `${year}年${classNum}組${number}番 ${course}コース ${name} さんの時間割`;
+
+      const file = {
+        AG: "ag_timetable.csv",
+        SG: "sg_timetable.csv",
+        本科: "honka_timetable.csv"
+      }[course];
+
+      if (!file) return;
+
+      fetch(file)
+        .then(res => res.text())
+        .then(csv => {
+          const rows = csv.trim().split("\n").map(line => line.split(","));
+          const table = document.createElement("table");
+          const thead = document.createElement("thead");
+          const tbody = document.createElement("tbody");
+
+          rows.forEach((row, i) => {
+            const tr = document.createElement("tr");
+            row.forEach(cell => {
+              const tag = i === 0 ? "th" : "td";
+              const td = document.createElement(tag);
+              td.textContent = cell;
+              tr.appendChild(td);
+            });
+            if (i === 0) thead.appendChild(tr);
+            else tbody.appendChild(tr);
+          });
+
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          document.getElementById("timetable-area").appendChild(table);
+        });
     });
 
-    const currentUser = sessionStorage.getItem('username');
-    const user = users.find(u => u.username === currentUser);
-
-    if (!user) {
-      alert('ユーザー情報が見つかりません');
-      return;
-    }
-
-    const course = user.course.toUpperCase(); // AG, SG, 本科（←コース名が完全一致する必要あり）
-    const csvFile = `timetable_${course}.csv`;
-
-    // 対応する時間割CSVを読み込んで表示
-    fetch(csvFile)
-      .then(res => res.text())
-      .then(data => {
-        const rows = data.trim().split('\n').map(row => row.split(','));
-        const table = document.getElementById('timetable');
-        table.innerHTML = rows.map(row =>
-          `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`
-        ).join('');
-      })
-      .catch(err => {
-        alert('時間割データの読み込みに失敗しました');
-        console.error(err);
-      });
-  })
-  .catch(err => {
-    alert('ユーザー情報の読み込みに失敗しました');
-    console.error(err);
+  document.getElementById("logout").addEventListener("click", () => {
+    sessionStorage.clear();
+    location.href = "index.html";
   });
+});
