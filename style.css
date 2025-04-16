@@ -1,61 +1,115 @@
 body {
   margin: 0;
-  font-family: sans-serif;
-  display: flex;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
 }
 
+/* ログイン画面 */
 .container {
   width: 400px;
+  max-width: 90%;
   margin: auto;
-  padding: 40px;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
   text-align: center;
 }
 
 .input-group {
   margin-bottom: 15px;
-  text-align: left;
 }
 
-.sidebar {
-  width: 200px;
-  background-color: #007BFF; /* 青色 */
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  background: #007BFF;
+  border: none;
+  border-radius: 5px;
   color: white;
-  padding-top: 20px;
-}
-
-.nav-button {
-  padding: 15px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.nav-button:hover {
-  background-color: #0056b3;
-}
-
-.nav-button.active {
-  background-color: #0056b3;
-}
-
-.logout {
-  margin-top: auto;
-  background-color: #004a99;
-}
-
-.logout:hover {
-  background-color: #003e7a;
-}
-
-.main-content {
-  flex: 1;
-  padding: 30px;
+.login-btn:hover {
+  background: #0056b3;
 }
 
 .error-banner {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-top: 15px;
   display: none;
-  color: red;
-  margin-top: 10px;
+}
+
+/* ホーム画面共通 */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100vh;
+  background: #007BFF;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.nav-button {
+  padding: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-button:hover,
+.nav-button.active {
+  background: #0056b3;
+}
+
+.nav-button.logout {
+  margin-top: auto;
+  background: #dc3545;
+  border-radius: 0;
+}
+
+.nav-button.logout:hover {
+  background: #c82333;
+}
+
+/* メインコンテンツ */
+.main-content {
+  margin-left: 200px;
+  padding: 20px;
+}
+
+/* 時間割テーブル */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #aaa;
+  padding: 10px;
+  text-align: center;
 }
